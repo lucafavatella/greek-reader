@@ -1,0 +1,37 @@
+#!/bin/sh
+
+## HACK sh - but using non-POSIX local.
+
+#set -x
+
+dl_file() {
+    curl -o ${1:?} -L "${2:-http://mysword-bible.info:8080/download/getfile.php?file=}${1:?}"
+}
+
+ensure_file_dled() {
+    test -e ${1:?} || dl_file ${1:?}
+}
+
+ensure_module_downloaded_and_unzipped() {
+    local F=${1:?}
+    ensure_file_dled $F ## TODO Compute checksum.
+    7z x $F > /dev/null
+}
+
+for F in rmac.dct.mybible.gz \
+             HiSB.bbl.mybible.zip abp.bbl.mybible.zip \
+             byz2005plus2.bbl.mybible.zip tra.bbl.mybible.gz \
+             sblgnt.bbl.mybible.gz \
+             kjv.bbl.mybible.gz
+do
+    ensure_module_downloaded_and_unzipped $F
+done
+
+for M in rmac.dct \
+             HiSB.bbl abp.bbl \
+             byz2005++.bbl tra.bbl \
+             sblgnt.bbl \
+             kjv.bbl
+do
+    ./sqlite_db_file_describe ${M}.mybible
+done
