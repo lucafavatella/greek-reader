@@ -78,6 +78,7 @@ case "${1:?}" in
         LOWER_OCCURRENCE_LIMIT_TO_EXCLUDE=${4:?}
         ./frequency_exclusion.py $LOWER_OCCURRENCE_LIMIT_TO_EXCLUDE > ci.out/exclude.txt
         wc -l ci.out/exclude.txt
+        echo "μήν" >> ci.out/exclude.txt # `μήν/N` (noun, strong 3376, gloss "a month") or `μήν/X` (particle, strong 3375, gloss "certainly")? Ref https://github.com/morphgnt/morphological-lexicon/commit/0c96a74f08381933f1de21457cc7d13f1aa5654e#diff-2d41209e747bb484493248c8f3f2158f
         ./make_glosses.py --exclude ci.out/exclude.txt "$VERSES" > ci.out/glosses.yaml
         ./make_headwords.py --exclude ci.out/exclude.txt "$VERSES" > ci.out/headwords.yaml
         ./make_strongs.py --exclude ci.out/exclude.txt --lexicon ci.deps/lexemes.yaml "$VERSES" > ci.out/strongs.yaml
