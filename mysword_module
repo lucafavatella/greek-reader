@@ -12,10 +12,14 @@ ensure_file_dled() {
     test -e ${1:?} || dl_file ${1:?}
 }
 
+ensure_file_unzipped() {
+    test -e ${1:?} || 7z x ${1:?} > /dev/null
+}
+
 ensure_module_downloaded_and_unzipped() {
     local F=${1:?}
     ensure_file_dled $F ## TODO Compute checksum.
-    7z x $F > /dev/null
+    ensure_file_unzipped $F
 }
 
 for F in rmac.dct.mybible.gz \
