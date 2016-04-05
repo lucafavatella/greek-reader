@@ -31,6 +31,14 @@ sql_table_export_w_encoding() {
     printf '%s\n%s\n%s\n%s\n%s\n' "${5:?}" ".headers ${3:?}" ".mode ${4:?}" '.output' "SELECT * FROM ${2:?} LIMIT 3;" | sqlite3 "${1:?}"
 }
 
+sql_table_export_dump() {
+    printf '%s\n%s\n%s\n%s\n' ".headers ${3:?}" ".mode ${4:?}" '.output' ".dump ${2:?}" | sqlite3 "${1:?}"
+}
+
+sql_table_export_dump_w_encoding() {
+    printf '%s\n%s\n%s\n%s\n%s\n' "${5:?}" ".headers ${3:?}" ".mode ${4:?}" '.output' ".dump ${2:?}" | sqlite3 "${1:?}"
+}
+
 sql_table_html() {
     printf '<table><caption>%s</caption><table>%s</table>' "${2:?}" "$(sql_table_export ${1:?} ${2:?} on html)"
 }
@@ -58,8 +66,10 @@ sql_db_file_reconstruction() {
                   echo "Exporting table '${Tab}' of database file '${F}' failed with status '${s}'. Exiting." >&2
                   exit 1
                 }
+            sql_table_export_dump "$F" "$Tab" off csv "$PE" | redirect_to_file_unless_existing "$TabCsv".dump
             for PE in 'PRAGMA encoding = "UTF-8";' 'PRAGMA encoding = "UTF-16";' 'PRAGMA encoding = "UTF-16le";' 'PRAGMA encoding = "UTF-16be";'; do
                 sql_table_export_w_encoding "$F" "$Tab" off csv "$PE" | redirect_to_file_unless_existing "$TabCsv"."$PE"
+                sql_table_export_dump_w_encoding "$F" "$Tab" off csv "$PE" | redirect_to_file_unless_existing "$TabCsv".dump."$PE"
             done
             printf '%s\n' ".import $TabCsv $Tab"
         done)
