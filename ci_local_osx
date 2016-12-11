@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -rf ci.deps && rm -rf ci.out && \
+    { mkdir -p ci.path && printf "%s\n" '#!/bin/sh' 'pip3 "$@"' > ci.path/pip && chmod +x ci.path/pip; } && ( export PATH="${PWD}/ci.path:${PATH:?}"; ./ci install; ) && \
+    ./ci before_script && \
+    ./ci script MySword "Matthew 1:1-Revelation 22:21" 1000000
