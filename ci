@@ -94,5 +94,11 @@ case "${1:?}" in
         RF=$(reader_filename_$BACKEND reader)
         file ci.out/$RF
         describe_reader_file_$BACKEND ci.out/$RF
+        md5sum ci.out/$RF
+        zip -j ci.out/${RF}.zip ci.out/$RF
+        ls -l ci.out/${RF}.zip
+        file ci.out/${RF}.zip
+        md5sum ci.out/$RF
+        #B=ci.out/${RF}.zip; U=$(cat $B | openssl base64 | curl -F 'sprunge=<-' 'http://sprunge.us') && echo "HINT curl $U | openssl base64 -d > $(basename $B)"
         ;;
 esac
