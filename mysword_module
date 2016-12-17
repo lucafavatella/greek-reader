@@ -35,3 +35,13 @@ for M in rmac.dct \
 do
     ./sqlite_db_file_describe ${M}.mybible
 done
+
+for F in strong.dct.mybible.gz
+do
+    ensure_module_downloaded_and_unzipped $F
+done
+
+for M in strong.dct
+do
+    ./sqlite_db_file_describe ${M}.mybible
+done
