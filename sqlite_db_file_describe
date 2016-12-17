@@ -24,7 +24,7 @@ sql_tables() {
 }
 
 sql_table_export() {
-    printf '%s\n%s\n%s\n%s\n' ".headers ${3:?}" ".mode ${4:?}" '.output' "SELECT * FROM ${2:?} LIMIT 3;" | sqlite3 "${1:?}"
+    printf '%s\n%s\n%s\n%s\n' ".headers ${3:?}" ".mode ${4:?}" '.output' "SELECT * FROM (SELECT * FROM ${2:?} LIMIT 2) UNION SELECT * FROM (SELECT * FROM ${2:?} LIMIT 2 OFFSET ((SELECT count(*) FROM ${2:?}) - 2));" | sqlite3 "${1:?}"
 }
 
 sql_table_html() {
