@@ -82,6 +82,7 @@ case "${1:?}" in
         echo "καταβιβάζω" >> ci.out/exclude.txt # καταβιβάζω (strong 2601) missing from lexemes.yaml
         echo "ὑπερβαίνω" >> ci.out/exclude.txt # ὑπερβαίνω (strong 5233) missing from lexemes.yaml
         echo "πυκνά" >> ci.out/exclude.txt # πυκνά (strong 4437) without headwords in lexemes.yaml
+        ./make_strong_dict.py --exclude ci.out/exclude.txt --lexicon ci.deps/lexemes.yaml "John 18:1-11" > ci.out/strong_dict.yaml
         ./make_glosses.py --exclude ci.out/exclude.txt --lexicon ci.deps/lexemes.yaml "$VERSES" > ci.out/glosses.yaml
         ./make_headwords.py --exclude ci.out/exclude.txt --lexicon ci.deps/lexemes.yaml "$VERSES" > ci.out/headwords.yaml
         ./make_strongs.py --exclude ci.out/exclude.txt --lexicon ci.deps/lexemes.yaml "$VERSES" > ci.out/strongs.yaml
