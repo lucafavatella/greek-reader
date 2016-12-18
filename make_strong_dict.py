@@ -36,12 +36,19 @@ output = args.output
 strong_dict = dict()
 
 
+for (lemma, metadata) in lexemes.items():
+    if lemma not in exclusions:
+        assert metadata["strongs"] not in strong_dict
+        strong_dict[metadata["strongs"]] = lemma
+
 for entry in get_morphgnt(verses):
-    if entry[0] == "WORD":
-        lemma = entry[1]["lemma"]
-        if lemma not in exclusions:
-            if "strongs" in lexemes[lemma]:
-                strong_dict[lexemes[lemma]["strongs"]] = lemma
+    pass
+#     if entry[0] == "WORD":
+#         lemma = entry[1]["lemma"]
+#         if lemma not in exclusions:
+#             if "strongs" in lexemes[lemma]:
+#                 assert lexemes[lemma]["strongs"] not in strong_dict, "lemma %r with Strong number % is not the only lemma with such Strong number - see lemma %r" % (lemma, lexemes[lemma]["strongs"], strong_dict[lexemes[lemma]["strongs"]])
+#                 strong_dict[lexemes[lemma]["strongs"]] = lemma
 
 for (strong, lemma) in strong_dict.items():
     print("{}: {}".format(strong, lemma, file=output))
