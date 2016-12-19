@@ -37,7 +37,7 @@ strong_dict = dict()
 
 
 for (lemma, metadata) in lexemes.items():
-    if lemma not in exclusions:
+    if lemma not in exclusions and "strongs" in strong_dict:
         assert metadata["strongs"] not in strong_dict
         strong_dict[metadata["strongs"]] = lemma
 
