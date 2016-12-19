@@ -38,7 +38,7 @@ strong_dict = dict()
 
 for (lemma, metadata) in lexemes.items():
     if lemma not in exclusions and "strongs" in metadata:
-        assert metadata["strongs"] not in strong_dict
+        assert metadata["strongs"] not in strong_dict, "lemma %r with Strong number % is not the only lemma with such Strong number - see lemma %r" % (lemma, metadata["strongs"], strong_dict[metadata["strongs"]])
         strong_dict[metadata["strongs"]] = lemma
 
 for entry in get_morphgnt(verses):
