@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from utils import load_yaml
 
@@ -161,7 +162,7 @@ CREATE TABLE "Bible" ("Book" INT,"Chapter" INT,"Verse" INT,"Scripture" TEXT);"""
         # * HiSB `<Q><H><wh>בְּ<D>רֵאשִׁ֖ית<WH7225><h><X>be·re·Shit<x><T>In the beginning<t><q> `
         # * Byz2005++ `<wt>Βίβλος<WG976><WTN-NSF l=""βίβλος""> `
         # * TRa `<wt>Βίβλος<WG976><WTN-NSF l=""βίβλος""> `
-        w = """<Q><G><wg>{}""".format(text) + ("""<WG{}>""".format(strong) if strong else "") + ("""<X>{}<x>""".format(headword) if headword else "") + ("""<WT{}>""".format(parse_robinson) if parse_robinson else "") + """<g><q> """  # Using `<X>...<x>` - meant for transliteration - for the headword because graphically better than a translators' note <RF>...<Rf> (inline vs. note).
+        w = """<Q><G><wg>{}""".format(text) + ("""<WG{}>""".format(strong) if strong else "") + ("""<X>{}<x>""".format(headword) if headword else "") + ("""<WT{}>""".format(re.sub(r'(S-[0-9])[SP]([A-Z]{3})', r'\1\2', parse_robinson)) if parse_robinson else "") + """<g><q> """  # Using `<X>...<x>` - meant for transliteration - for the headword because graphically better than a translators' note <RF>...<Rf> (inline vs. note).
         self.postponed_verse += w
         return ""
 
